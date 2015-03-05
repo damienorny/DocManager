@@ -1,3 +1,3 @@
-doc_manager_document_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: DocManagerDocumentBundle:Default:index }
+doc_manager_document_index:
+    path:     /index
+    defaults: { _controller: DocManagerDocumentBundle:Document:index }
