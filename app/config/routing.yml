@@ -1,3 +1,4 @@
-app:
-    resource: @AppBundle/Controller/
-    type:     annotation
+doc_manager_document:
+    resource: "@DocManagerDocumentBundle/Resources/config/routing.yml"
+    prefix:   /
+
