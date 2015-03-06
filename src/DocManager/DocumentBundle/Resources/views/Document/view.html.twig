@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    Modification - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <p>{{ document.name }}</p>
+    <p>{{ document.description }}</p>
+{% endblock %}
