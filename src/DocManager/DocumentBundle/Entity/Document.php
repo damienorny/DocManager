@@ -49,6 +49,10 @@ class Document
      */
     private $documentDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="DocManager\UserBundle\Entity\User")
+     */
+    private $user;
 
     /**
      * Get id
@@ -150,5 +154,28 @@ class Document
     public function getDocumentDate()
     {
         return $this->documentDate;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \DocManager\UserBundle\Entity\User $user
+     * @return Document
+     */
+    public function setUser(\DocManager\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \DocManager\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

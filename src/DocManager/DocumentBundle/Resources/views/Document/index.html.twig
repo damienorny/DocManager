@@ -4,11 +4,16 @@
 
 {% block body %}
 
-    <p>Bienvenue à l'accueil</p>
-    <a class="btn btn-default" href="{{ path('doc_manager_document_add') }}">Ajouter un document</a>
-    {% for document in documents %}
-        <p><a href="{{ path('doc_manager_document_view', {'id':document.id}) }}">{{ document.name }}</a></p>
-    {% else %}
-        <p>Pas encore de Documents</p>
-    {% endfor %}
+
+    <a class="btn btn-default btn-block btn-lg" href="{{ path('doc_manager_document_add') }}">
+        <i class="fa fa-upload"></i> Ajouter un document
+    </a>
+    <div>
+        {% for document in documents %}
+            <p><a href="{{ path('doc_manager_document_view', {'id':document.id}) }}">{{ document.name }}</a></p>
+        {% else %}
+              <i class="fa fa-thumbs-o-up fa-5x"></i>
+        {% endfor %}
+    </div>
+
 {% endblock %}
