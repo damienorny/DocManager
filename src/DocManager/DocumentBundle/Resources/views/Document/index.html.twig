@@ -1,18 +1,30 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}Accueil - {{ parent() }}{% endblock %}
-
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('css/docmanager.css') }}"
+{% endblock %}
 {% block body %}
 
 
-    <a class="btn btn-default btn-block btn-lg" href="{{ path('doc_manager_document_add') }}">
+    <a class="btn btn-primary btn-block btn-lg" href="{{ path('doc_manager_document_add') }}">
         <i class="fa fa-upload"></i> Ajouter un document
     </a>
-    <div>
+    <div class="document-list">
         {% for document in documents %}
-            <p><a href="{{ path('doc_manager_document_view', {'id':document.id}) }}">{{ document.name }}</a></p>
+            <div class="col-md-3 col-sm-6">
+                <a href="{{ path('doc_manager_document_view', {'id':document.id}) }}" class="thumbnail document-thumbnail">
+                    <img class="img-rounded img-responsive" src="{{ asset(document.webPath) }}">
+                    <div class="caption">
+                        <p class="document-name">{{ document.name }}</p>
+                    </div>
+                </a>
+            </div>
         {% else %}
-              <i class="fa fa-thumbs-o-up fa-5x"></i>
+            <div class="col-sm-offset-6">
+                <i class="fa fa-thumbs-o-up fa-5x"></i>
+            </div>
+
         {% endfor %}
     </div>
 

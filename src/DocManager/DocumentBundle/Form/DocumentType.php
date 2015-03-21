@@ -16,6 +16,16 @@ class DocumentType extends AbstractType
     {
         $builder->add('name', 'text')
             ->add('description', 'textarea')
+            ->add('documentDate', 'date',array(
+                'input' => 'datetime',
+                'widget' => 'single_text'
+            ))
+            ->add('expirationDate', 'date',array(
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'required' => false
+            ))
+            ->add('file', 'file')
             ->add('save', 'submit');
     }
 

@@ -5,7 +5,6 @@ Ajout - {{ parent() }}
 {% endblock %}
 
 {% block body %}
-    Ajout
     {{ form_start(form, {'attr':{'class' : 'form-horizontal'}}) }}
         <div class="form-group">
             {{ form_label(form.name,"Nom du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -14,9 +13,32 @@ Ajout - {{ parent() }}
             </div>
         </div>
         <div class="form-group">
-            {{ form_row(form.description) }}
+            {{ form_label(form.description,"Description du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-4">
+                {{ form_widget(form.description, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
         </div>
-        {{ form_row(form.save) }}
+        <div class="form-group">
+            {{ form_label(form.documentDate,"Date du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-4">
+                {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.expirationDate,"Date d'expiration du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-4">
+                {{ form_widget(form.expirationDate, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.file,"Image",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-4">
+                {{ form_widget(form.file, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col-sm-offset-3">
+            {{ form_row(form.save, {'attr' : {'class' : 'btn btn-default'}}) }}
+        </div>
     {{ form_end(form) }}
 {% endblock %}
 

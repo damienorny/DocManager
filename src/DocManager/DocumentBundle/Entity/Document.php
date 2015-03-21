@@ -3,12 +3,14 @@
 namespace DocManager\DocumentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Document
  *
  * @ORM\Table("docmanager_document")
  * @ORM\Entity(repositoryClass="DocManager\DocumentBundle\Entity\DocumentRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Document
 {
@@ -38,21 +40,42 @@ class Document
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="uploadDate", type="datetime")
+     * @ORM\Column(name="upload_date", type="datetime")
      */
     private $uploadDate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="documentDate", type="datetime")
+     * @ORM\Column(name="document_date", type="datetime")
      */
     private $documentDate;
+
+    /**
+     * @var string
+     * @ORM\Column(name="document_image", type="string", length=255)
+     */
+    private $image;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="expiration_date", type="datetime", nullable=true)
+     */
+    private $expirationDate;
+
+    private $file;
+
+    private $tempFilename;
 
     /**
      * @ORM\ManyToOne(targetEntity="DocManager\UserBundle\Entity\User")
      */
     private $user;
+
+    function __construct()
+    {
+        $this->setDocumentDate(new \DateTime());
+    }
 
     /**
      * Get id
@@ -177,5 +200,132 @@ class Document
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return Document
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    // On modifie le setter de File, pour prendre en compte l'upload d'un fichier lorsqu'il en existe déjà un autre
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        // Si jamais il n'y a pas de fichier (champ facultatif)
+        if (null === $this->file) {
+            return;
+        }
+
+        // Le nom du fichier est son id, on doit juste stocker également son extension
+        // Pour faire propre, on devrait renommer cet attribut en « extension », plutôt que « url »
+        $this->setImage($this->file->getClientOriginalName());
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+        // On déplace le fichier envoyé dans le répertoire de notre choix
+        $this->file->move(
+            $this->getUploadRootDir(), // Le répertoire de destination
+            $this->image   // Le nom du fichier à créer, ici « id.extension »
+        );
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function preRemoveUpload()
+    {
+        // On sauvegarde temporairement le nom du fichier, car il dépend de l'id
+        $this->tempFilename = $this->getUploadRootDir().'/'.$this->image;
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        // En PostRemove, on n'a pas accès à l'id, on utilise notre nom sauvegardé
+        if (file_exists($this->tempFilename)) {
+            // On supprime le fichier
+            unlink($this->tempFilename);
+        }
+    }
+
+    public function getUploadDir()
+    {
+        // On retourne le chemin relatif vers l'image pour un navigateur (relatif au répertoire /web donc)
+        return 'uploads/img/'.$this->getUser()->getId();
+    }
+
+    public function getWebPath()
+    {
+        return $this->getUploadDir().'/'.$this->image;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // On retourne le chemin relatif vers l'image pour notre code PHP
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    /**
+     * Set expirationDate
+     *
+     * @param \DateTime $expirationDate
+     * @return Document
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationDate
+     *
+     * @return \DateTime 
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
     }
 }

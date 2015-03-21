@@ -1,8 +1,3 @@
-doc_manager_user:
-    resource: "@DocManagerUserBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 doc_manager_document:
     resource: "@DocManagerDocumentBundle/Resources/config/routing.yml"
     prefix:   /

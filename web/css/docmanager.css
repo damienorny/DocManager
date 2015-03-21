@@ -1,0 +1,21 @@
+/*.document-thumbnail
+{
+    display: inline-block;
+}
+.document-thumbnail:hover
+{
+    background-color: #999999;
+}*/
+.document-thumbnail>img
+{
+    height: 250px;
+    width: 250px;
+}
+.document-name
+{
+    text-align: center;
+}
+.document-list
+{
+    padding-top: 20px;
+}

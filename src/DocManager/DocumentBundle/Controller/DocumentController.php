@@ -41,7 +41,6 @@ class DocumentController extends Controller
         if($form->isValid())
         {
             $document->setUploadDate(new \DateTime());
-            $document->setDocumentDate(new \DateTime());
             $document->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($document);

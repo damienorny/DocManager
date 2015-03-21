@@ -7,10 +7,13 @@
     <title>
         {% block title %}DocManager{% endblock %}
     </title>
-
+    <style>
+        body { padding-top: 70px; }
+    </style>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    {% block style %}{% endblock %}
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -20,7 +23,7 @@
     <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -56,15 +59,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
-            <ul class="nav nav-pills nav-stacked">
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
-                <li><a href="#">Test</a></li>
-            </ul>
-        </div>
-        <div class="col-md-9">
+        <div class="">
         {% block body %}
 
         {% endblock %}
