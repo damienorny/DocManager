@@ -3,7 +3,7 @@
 namespace DocManager\DocumentBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\QueryBuilder;
 /**
  * DocumentRepository
  *
@@ -12,5 +12,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class DocumentRepository extends EntityRepository
 {
+    public function getDocumentWithCategories(array $categoryNames)
+    {
+        $qb = $this->createQueryBuilder('d');
 
+        // On fait une jointure avec l'entité Category avec pour alias « c »
+        $qb
+            ->join('d.categories', 'c')
+            ->addSelect('c')
+            ->join('d.user', 'u')
+            ->addSelect('u')
+        ;
+
+        // Puis on filtre sur le nom des catégories à l'aide d'un IN
+        $qb->where($qb->expr()->in('c.name', $categoryNames));
+        $qb->where($qb->expr()->in('u.name', $categoryNames));
+        // La syntaxe du IN et d'autres expressions se trouve dans la documentation Doctrine
+
+        // Enfin, on retourne le résultat
+        return $qb
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

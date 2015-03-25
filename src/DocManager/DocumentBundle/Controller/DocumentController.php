@@ -6,6 +6,7 @@ use DocManager\DocumentBundle\Entity\Document;
 use DocManager\DocumentBundle\Form\DocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DocumentController extends Controller
 {
@@ -20,6 +21,10 @@ class DocumentController extends Controller
 
     public function viewAction(Document $document)
     {
+        if($document->getUser() != $this->getUser())
+        {
+            throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
+        }
         return $this->render('@DocManagerDocument/Document/view.html.twig',array(
             'document' => $document
         ));
@@ -55,6 +60,10 @@ class DocumentController extends Controller
 
     public function deleteAction(Document $document, Request $request)
     {
+        if($document->getUser() != $this->getUser())
+        {
+            throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
+        }
         $formBuilder = $this->createFormBuilder();
         $form = $formBuilder->getForm();
 

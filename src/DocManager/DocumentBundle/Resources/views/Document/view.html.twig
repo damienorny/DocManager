@@ -8,5 +8,9 @@
     <p>{{ document.name }}</p>
     <p>{{ document.description }}</p>
     <p><img src="{{ asset(document.webPath) }}"></p>
+    <p>{% for category in document.categories %}
+        <span class="label label-primary">{{ category.name }}</span>
+        {% endfor %}
+    </p>
     <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'id' : document.id}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
 {% endblock %}

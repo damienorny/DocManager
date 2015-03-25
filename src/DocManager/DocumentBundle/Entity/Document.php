@@ -3,6 +3,7 @@
 namespace DocManager\DocumentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -72,9 +73,15 @@ class Document
      */
     private $user;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="DocManager\DocumentBundle\Entity\Category", cascade={"persist"})
+     */
+    private $categories;
+
     function __construct()
     {
         $this->setDocumentDate(new \DateTime());
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -327,5 +334,21 @@ class Document
     public function getExpirationDate()
     {
         return $this->expirationDate;
+    }
+
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+        return $this;
+    }
+
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
