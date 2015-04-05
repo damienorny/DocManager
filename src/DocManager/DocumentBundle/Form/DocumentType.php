@@ -26,6 +26,11 @@ class DocumentType extends AbstractType
                 'required' => false
             ))
             ->add('file', 'file')
+            ->add('categories', 'collection', array(
+                'type' => new CategoryType(),
+                'allow_add' => true,
+                'allow_delete' => true
+            ))
             ->add('save', 'submit');
     }
 

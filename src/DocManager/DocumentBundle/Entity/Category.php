@@ -66,4 +66,26 @@ class Category
     {
         return $this->name;
     }
+
+    /**
+     * Set user
+     *
+     * @param \DocManager\UserBundle\Entity\User $user
+     * @return Category
+     */
+    public function setUser(\DocManager\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \DocManager\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

@@ -347,6 +347,11 @@ class Document
         $this->categories->removeElement($category);
     }
 
+    public function updateCategories(ArrayCollection $categories)
+    {
+        $this->categories = $categories;
+    }
+
     public function getCategories()
     {
         return $this->categories;
