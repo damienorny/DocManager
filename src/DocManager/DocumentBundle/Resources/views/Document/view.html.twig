@@ -5,12 +5,82 @@
 {% endblock %}
 
 {% block body %}
-    <p>{{ document.name }}</p>
-    <p>{{ document.description }}</p>
-    <p><img src="{{ asset(document.webPath) }}"></p>
-    <p>{% for category in document.categories %}
-        <span class="label label-primary">{{ category.name }}</span>
+    <div class="col-md-8 well">
+        <p>{{ document.name }}</p>
+        <p>{{ document.description }}</p>
+        <p><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
+        <p>
+        </p>
+        <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'id' : document.id}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
+    </div>
+    <div class="col-md-3 col-md-offset-1 well">
+        <h2>Catégories <small><button class="btn btn-default btn-plus"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></small></h2>
+        {{ form_start(form) }}
+            {% macro categoryCollectionItem(formData) %}
+                <div class="form-group">
+                    <div class="input-group">
+                        {{ form_widget(formData.name, {'attr' : {'class' : 'form-control'}}) }}
+                        <span class="input-group-btn">
+                                <button class="btn btn-danger btn-supprimer" type="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                </div>
+            {% endmacro %}
+
+            <div class="categories" data-prototype="{{ _self.categoryCollectionItem(form.categories.vars.prototype)|e }}">
+                {% for category in form.categories %}
+                    {{ _self.categoryCollectionItem(category) }}
+                {% endfor %}
+            </div>
+            <div style="text-align: right">
+                {{ form_row(form.save, {'attr' : {'class' : 'btn btn-default'}, 'label' : 'Sauvegarder'}) }}
+            </div>
+        {{ form_end(form) }}
+        {% for category in document.categories %}
+            <span class="label label-primary">{{ category.name }}</span>
         {% endfor %}
-    </p>
-    <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'id' : document.id}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
+    </div>
+    <script type="application/javascript">
+        $(document).ready(function(){
+            var $container = $(".categories");
+            // On ajoute un lien pour ajouter une nouvelle catégorie
+
+
+            $('.btn-supprimer').click(function(){
+                $(this).parent().parent().parent().remove();
+            });
+
+            // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+            $('.btn-plus').click(function(e) {
+                addCategory($container);
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                return false;
+            });
+
+            // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+            var index = $container.find(':input').length;
+
+            // La fonction qui ajoute un formulaire Categorie
+            function addCategory($container) {
+                // Dans le contenu de l'attribut « data-prototype », on remplace :
+                // - le texte "__name__label__" qu'il contient par le label du champ
+                // - le texte "__name__" qu'il contient par le numéro du champ
+                var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, '')
+                        .replace(/__name__/g, index));
+
+                $container.append($prototype);
+
+                $(""+$prototype + " button").click(function(){
+                    $(this).parent().parent().parent().remove();
+                });
+
+                index++;
+            }
+
+            // La fonction qui ajoute un lien de suppression d'une catégorie
+
+        });
+
+
+    </script>
 {% endblock %}

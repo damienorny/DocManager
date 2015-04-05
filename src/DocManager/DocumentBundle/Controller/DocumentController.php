@@ -3,6 +3,7 @@
 namespace DocManager\DocumentBundle\Controller;
 
 use DocManager\DocumentBundle\Entity\Document;
+use DocManager\DocumentBundle\Form\EditCategoriesType;
 use DocManager\DocumentBundle\Form\DocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,14 +20,27 @@ class DocumentController extends Controller
             array('documents' => $documents));
     }
 
-    public function viewAction(Document $document)
+    public function viewAction(Document $document, Request $request)
     {
         if($document->getUser() != $this->getUser())
         {
             throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
         }
+        $form = $this->createForm(new EditCategoriesType(), $document);
+        $form->handleRequest($request);
+        if($form->isValid())
+        {
+            foreach($document->getCategories() as $categorie)
+            {
+                $categorie->setUser($this->getUser());
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($document);
+            $em->flush();
+        }
         return $this->render('@DocManagerDocument/Document/view.html.twig',array(
-            'document' => $document
+            'document' => $document,
+            'form' => $form->createView()
         ));
     }
 
@@ -47,6 +61,11 @@ class DocumentController extends Controller
         {
             $document->setUploadDate(new \DateTime());
             $document->setUser($this->getUser());
+            $categories = $document->getCategories();
+            foreach($categories as $categorie)
+            {
+                $categorie->setUser($this->getUser());
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->flush();
