@@ -43,7 +43,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <p class="navbar-text">Bienvenue {{ app.user.username }}</p>
+                    <p class="navbar-text">Bienvenue <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a></p>
                     <li><a href="{{ path('fos_user_security_logout') }}">Deconnexion</a></li>
                     <li><a href="#">Mon compte</a></li>
                 {% else %}

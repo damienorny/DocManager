@@ -2,7 +2,11 @@
 
 {% block fos_user_content %}
     <div class = "well">
+        <h2>Votre profile :</h2>
 
+        Nom d'utilisateur : {{ app.user.username }}<br/>
+        Adresse email : {{ app.user.email }}<br/><br/>
+        <a href = "{{ path('fos_user_profile_edit') }}" class="btn btn-default">Editer</a>
+        <a href = "{{ path('fos_user_change_password') }}" class="btn btn-default">Changer de mot de passe</a>
     </div>
-
 {% endblock fos_user_content %}

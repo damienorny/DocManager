@@ -1,0 +1,30 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    <div class="well">
+        <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit form-horizontal">
+            <div class="form-group">
+                {{ form_label(form.username,"Nom d'utilisateur",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.username, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email,"Email",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.email, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.current_password,"Mot de passe actuel",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.current_password, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
+            </div>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock fos_user_content %}
