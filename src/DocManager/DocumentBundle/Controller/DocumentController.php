@@ -22,6 +22,7 @@ class DocumentController extends Controller
 
     public function viewAction(Document $document, Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         if($document->getUser() != $this->getUser())
         {
             throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
@@ -34,12 +35,13 @@ class DocumentController extends Controller
             {
                 $categorie->setUser($this->getUser());
             }
-            $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->flush();
         }
+        $categories = $em->getRepository('DocManagerDocumentBundle:Category')->findByUser($this->getUser()->getId());
         return $this->render('@DocManagerDocument/Document/view.html.twig',array(
             'document' => $document,
+            'categories' => $categories,
             'form' => $form->createView()
         ));
     }

@@ -19,7 +19,7 @@
             {% macro categoryCollectionItem(formData) %}
                 <div class="form-group">
                     <div class="input-group">
-                        {{ form_widget(formData.name, {'attr' : {'class' : 'form-control'}}) }}
+                        {{ form_widget(formData.name, {'attr' : {'class' : 'form-control tags'}}) }}
                         <span class="input-group-btn">
                                 <button class="btn btn-danger btn-supprimer" type="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                         </span>
@@ -70,7 +70,8 @@
 
                 $container.append($prototype);
 
-                $(""+$prototype + " button").click(function(){
+
+                $(".btn-supprimer").unbind().click(function(){
                     $(this).parent().parent().parent().remove();
                 });
 
@@ -81,6 +82,32 @@
 
         });
 
-
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $( ".tags" ).autocomplete({
+            source: availableTags
+        });
     </script>
 {% endblock %}
