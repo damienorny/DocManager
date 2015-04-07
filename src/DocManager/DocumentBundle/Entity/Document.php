@@ -338,7 +338,10 @@ class Document
 
     public function addCategory(Category $category)
     {
-        $this->categories[] = $category;
+        if(!$this->categories->contains($category))
+        {
+            $this->categories[] = $category;
+        }
         return $this;
     }
 

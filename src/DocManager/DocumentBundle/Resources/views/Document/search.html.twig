@@ -1,0 +1,91 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('css/docmanager.css') }}"
+{% endblock %}
+{% block body %}
+
+    <div class="document-list col-md-9">
+        {% for document in documents %}
+            <div class="col-md-4 col-sm-6 elementDocument" data-set="{% for categorie in document.categories %}{{ categorie.name }}{% if not loop.last %},{% endif %}{% endfor %}">
+                <a href="{{ path('doc_manager_document_view', {'id':document.id}) }}" class="thumbnail document-thumbnail">
+                    <img class="img-rounded img-responsive" src="{{ asset(document.webPath) }}">
+                    <div class="caption">
+                        <p class="document-name">{{ document.name }}</p>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="col-sm-offset-6">
+                <i class="fa fa-thumbs-o-up fa-5x"></i>
+            </div>
+
+        {% endfor %}
+    </div>
+    <div class="well col-md-3">
+        <h2>Catégories recherchées</h2>
+        <div class="input-group">
+            <input type="text" placeholder="Catégorie" id="rechercheCategorie" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-clear-recherche"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            </span>
+        </div>
+        <div class="listeCategories">
+            {% for categorie in categories %}
+                <div class="checkbox">
+                    <label><input class="elementCategorie" data-set="{{ categorie.name }}" type="checkbox">{{ categorie.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $('.btn-clear-recherche').click(function(){
+                $(".elementCategorie").parent().show();
+                $('#rechercheCategorie').val("").focus();
+            });
+            $('#rechercheCategorie').keyup(function(event){
+                var texte = $(this).val().toLowerCase();
+                $(".elementCategorie").each(function(index){
+                    var categorie = $(this).attr('data-set').toLowerCase();
+                    if(categorie.indexOf(texte) > -1)
+                    {
+                        $(this).parent().show();
+                    }
+                    else
+                    {
+                        $(this).parent().hide();
+                    }
+                });
+            });
+            $(".elementCategorie").change(function(){
+                var categorieCochee = [];
+                $('.elementCategorie:checked').each(function(){
+                    categorieCochee.push($(this).attr('data-set'))
+                });
+                $('.elementDocument').each(function(){
+                    var categoriesDocument = $(this).attr('data-set').split(",");
+                    var afficher = true;
+                    categorieCochee.forEach(function(entry){
+                        if(categoriesDocument.indexOf(entry) < 0)
+                        {
+                            afficher = false;
+                        }
+                    });
+                    if(afficher)
+                    {
+                        $(this).show();
+                    }
+                    else
+                    {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

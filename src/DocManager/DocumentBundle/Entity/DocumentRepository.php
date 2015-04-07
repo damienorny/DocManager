@@ -2,6 +2,7 @@
 
 namespace DocManager\DocumentBundle\Entity;
 
+use DocManager\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 /**
@@ -30,6 +31,19 @@ class DocumentRepository extends EntityRepository
         // La syntaxe du IN et d'autres expressions se trouve dans la documentation Doctrine
 
         // Enfin, on retourne le résultat
+        return $qb
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getOutOfDateDocuments(User $user)
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb->where('d.expirationDate < :date')
+            ->setParameter('date', new \DateTime())
+            ->andWhere('d.user = :user')
+            ->setParameter('user', $user);
         return $qb
             ->getQuery()
             ->getResult()

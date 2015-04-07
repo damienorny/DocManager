@@ -1,0 +1,7 @@
+
+    <ul class="nav navbar-nav">
+        <li><a href="{{ path('doc_manager_document_search') }}">Rechercher</a></li>
+        {% if documents|length > 0 %}
+        <li><a href="{{ path('doc_manager_document_out_of_date') }}"><span class="text-danger">Documents périmés</span> <span class="badge">{{ documents|length }}</span></a></li>
+        {% endif %}
+    </ul>

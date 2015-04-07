@@ -3,12 +3,15 @@
 namespace DocManager\DocumentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Category
  *
  * @ORM\Table(name="docmanager_category")
  * @ORM\Entity(repositoryClass="DocManager\DocumentBundle\Entity\CategoryRepository")
+ * @UniqueEntity({"name","user"})
  */
 class Category
 {
@@ -88,4 +91,11 @@ class Category
     {
         return $this->user;
     }
+
+    function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

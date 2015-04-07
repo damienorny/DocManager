@@ -34,7 +34,17 @@ class DocumentController extends Controller
             foreach($document->getCategories() as $categorie)
             {
                 $categorie->setUser($this->getUser());
+                $dbCategory = $em->getRepository('DocManagerDocumentBundle:Category')->findOneBy(array(
+                    'name' => $categorie->getName(),
+                    'user' => $this->getUser()
+                ));
+                if($dbCategory != null)
+                {
+                    $document->removeCategory($categorie);
+                    $document->addCategory($dbCategory);
+                }
             }
+
             $em->persist($document);
             $em->flush();
         }
@@ -54,6 +64,7 @@ class DocumentController extends Controller
 
     public function addAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $document = new Document();
         $form = $this->createForm(new DocumentType(), $document);
 
@@ -67,15 +78,24 @@ class DocumentController extends Controller
             foreach($categories as $categorie)
             {
                 $categorie->setUser($this->getUser());
+                $dbCategory = $em->getRepository('DocManagerDocumentBundle:Category')->findOneBy(array(
+                    'name' => $categorie->getName(),
+                    'user' => $this->getUser()
+                ));
+                if($dbCategory != null)
+                {
+                    $document->removeCategory($categorie);
+                    $document->addCategory($dbCategory);
+                }
             }
-            $em = $this->getDoctrine()->getManager();
             $em->persist($document);
             $em->flush();
             return $this->redirect($this->generateUrl('doc_manager_document_index'));
         }
-
+        $categories = $em->getRepository('DocManagerDocumentBundle:Category')->findByUser($this->getUser()->getId());
         return $this->render('DocManagerDocumentBundle:Document:add.html.twig', array(
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'categories' => $categories
             ));
     }
 
@@ -101,5 +121,38 @@ class DocumentController extends Controller
             'form' => $form->createView(),
             'document' => $document
         ));
+    }
+
+    public function outofdateAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $documents = $em->getRepository('DocManagerDocumentBundle:Document')->getOutOfDateDocuments($this->getUser());
+        return $this->render('@DocManagerDocument/Document/index.html.twig',
+            array('documents' => $documents));
+    }
+
+    public function countoutofdateAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $securityContext = $this->container->get('security.context');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $documents = $em->getRepository('DocManagerDocumentBundle:Document')->getOutOfDateDocuments($this->getUser());
+        }
+        else
+        {
+            $documents = null;
+        }
+        return $this->render('@DocManagerDocument/Document/countOutOfDate.html.twig',
+            array('documents' => $documents));
+    }
+
+    public function searchAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $documents = $em->getRepository('DocManagerDocumentBundle:Document')->findByUser($this->getUser()->getId());
+        $categories = $em->getRepository('DocManagerDocumentBundle:Category')->findByUser($this->getUser()->getId());
+        return $this->render('@DocManagerDocument/Document/search.html.twig',
+            array('documents' => $documents,
+                'categories' => $categories));
     }
 }

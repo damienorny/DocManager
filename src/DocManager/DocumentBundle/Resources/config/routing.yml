@@ -13,3 +13,9 @@ doc_manager_document_view:
 doc_manager_document_delete:
     path:     /delete/{id}
     defaults: { _controller: DocManagerDocumentBundle:Document:delete }
+doc_manager_document_out_of_date:
+    path:     /out-of-date
+    defaults: { _controller: DocManagerDocumentBundle:Document:outofdate }
+doc_manager_document_search:
+    path:     /search
+    defaults: { _controller: DocManagerDocumentBundle:Document:search }

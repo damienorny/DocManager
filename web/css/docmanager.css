@@ -19,3 +19,10 @@
 {
     padding-top: 20px;
 }
+
+.listeCategories
+{
+    height: 40vh;
+    min-height: 270px;
+    overflow: auto;
+}
