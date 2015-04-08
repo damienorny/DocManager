@@ -13,7 +13,7 @@
     <body>
         Bonjour {{ user.username|capitalize }},<br/>
         Nous avons détécté que vous possédez
-        {% if {{ documents|length }} == 1 %}
+        {% if documents|length == 1 %}
             {{ documents|length }} document périmé:
         {% else %}
             {{ documents|length }} documents périmés:

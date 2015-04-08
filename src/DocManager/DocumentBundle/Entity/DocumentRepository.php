@@ -37,16 +37,27 @@ class DocumentRepository extends EntityRepository
             ;
     }
 
-    public function getOutOfDateDocuments(User $user)
+    public function getOutOfDateDocuments(User $user = null)
     {
         $qb = $this->createQueryBuilder('d');
         $qb->where('d.expirationDate < :date')
-            ->setParameter('date', new \DateTime())
-            ->andWhere('d.user = :user')
-            ->setParameter('user', $user);
+            ->setParameter('date', new \DateTime());
+        if(isset($user))
+        {
+            $qb->andWhere('d.user = :user')
+                ->setParameter('user', $user);
+        }
         return $qb
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function getOutOfDateDocuments30Days()
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb->where('d.expirationDate < :date')
+            ->setParameter('date', new \DateTime());
+
     }
 }

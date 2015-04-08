@@ -44,5 +44,7 @@ monolog:
 assetic:
     use_controller: true
 
-#swiftmailer:
-#    delivery_address: me@example.com
+swiftmailer:
+    transport:  gmail
+    username:   damien.orny@edu.esiee.fr
+    password:   IRaspberry77174--
