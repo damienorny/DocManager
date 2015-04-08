@@ -21,7 +21,7 @@
         <br/>
         {% for document in documents %}
             <div class="col-md-3 col-sm-6">
-                <a href="{{ path('doc_manager_document_view', {'id':document.id}) }}" class="thumbnail document-thumbnail">
+                <a href="{{ url('doc_manager_document_view', {'id':document.id}) }}" class="thumbnail document-thumbnail">
                     <img class="img-rounded img-responsive" src="{{ asset(document.webPath) }}">
                     <div class="caption">
                         <p class="document-name">{{ document.name }}</p>
