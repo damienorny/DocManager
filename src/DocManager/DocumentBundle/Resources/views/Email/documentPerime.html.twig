@@ -11,7 +11,7 @@
 
     </head>
     <body>
-        Bonjour {{ app.user.username|capitalize }},<br/>
+        Bonjour {{ user.username|capitalize }},<br/>
         Nous avons détécté que vous possédez
         {% if {{ documents|length }} == 1 %}
             {{ documents|length }} document périmé:
