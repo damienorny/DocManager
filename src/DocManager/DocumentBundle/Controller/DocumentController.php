@@ -44,6 +44,7 @@ class DocumentController extends Controller
                     $document->removeCategory($categorie);
                     $document->addCategory($dbCategory);
                 }
+                $em->flush();
             }
             $em->persist($document);
             $em->flush();
@@ -104,6 +105,7 @@ class DocumentController extends Controller
                     $document->removeCategory($categorie);
                     $document->addCategory($dbCategory);
                 }
+                $em->flush();
             }
             $em->persist($document);
             $em->flush();

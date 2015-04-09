@@ -44,7 +44,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <li><a href="{{ path('fos_user_profile_show') }}">Bienvenue {{ app.user.username|capitalize }}</a></li>
+                    <li><a href="{{ path('fos_user_profile_show') }}">Bienvenue {{ app.user.username|capitalize }}{% if is_granted('ROLE_PREMIUM') %} <i class="fa fa-star" style="color: #ffcc00"></i>{% endif%}</a></li>
                     <li><a href="{{ path('fos_user_security_logout') }}">Deconnexion</a></li>
                 {% else %}
                     <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>

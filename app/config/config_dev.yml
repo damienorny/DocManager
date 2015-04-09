@@ -43,8 +43,3 @@ monolog:
 
 assetic:
     use_controller: true
-
-swiftmailer:
-    transport:  gmail
-    username:   damien.orny@edu.esiee.fr
-    password:   

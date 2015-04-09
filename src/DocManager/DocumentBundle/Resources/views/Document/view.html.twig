@@ -13,14 +13,14 @@
         <a class="btn btn-primary" href="{{ path('doc_manager_document_edit', {'slug' : document.slug}) }}"><i class="fa fa-pencil-square-o"></i> Modifier</a>
     </div>
     <div class="col-md-3 col-md-offset-1 well">
-        <h2>Catégories <small><button class="btn btn-default btn-plus"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></small></h2>
+        <h2>Catégories <small><button class="btn btn-default btn-plus"><i class="fa fa-plus"></i></button></small></h2>
         {{ form_start(form) }}
             {% macro categoryCollectionItem(formData) %}
                 <div class="form-group">
                     <div class="input-group">
                         {{ form_widget(formData.name, {'attr' : {'class' : 'form-control tags'}}) }}
                         <span class="input-group-btn">
-                                <button class="btn btn-danger btn-supprimer" type="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button class="btn btn-danger btn-supprimer" type="button"><i class="fa fa-trash-o"></i></span></button>
                         </span>
                     </div>
                 </div>
@@ -40,30 +40,28 @@
         {% endfor %}
     </div>
     <script type="application/javascript">
+        var availableTags = [
+            {% for category in categories %}
+            {% spaceless %}
+            "{{ category.name }}"{% if not loop.last %},{% endif %}
+            {% endspaceless %}
+            {% endfor %}
+        ];
         $(document).ready(function(){
             var $container = $(".categories");
-            // On ajoute un lien pour ajouter une nouvelle catégorie
-
 
             $('.btn-supprimer').click(function(){
                 $(this).parent().parent().parent().remove();
             });
 
-            // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
             $('.btn-plus').click(function(e) {
                 addCategory($container);
-                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
                 return false;
             });
 
-            // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
             var index = $container.find(':input').length;
 
-            // La fonction qui ajoute un formulaire Categorie
             function addCategory($container) {
-                // Dans le contenu de l'attribut « data-prototype », on remplace :
-                // - le texte "__name__label__" qu'il contient par le label du champ
-                // - le texte "__name__" qu'il contient par le numéro du champ
                 var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, '')
                         .replace(/__name__/g, index));
 
@@ -73,24 +71,15 @@
                 $(".btn-supprimer").unbind().click(function(){
                     $(this).parent().parent().parent().remove();
                 });
-                $( ".tags").unbind().autocomplete({
+                $( "input.tags" ).autocomplete({
                     source: availableTags
                 });
                 index++;
             }
-
-            // La fonction qui ajoute un lien de suppression d'une catégorie
-
         });
 
-        var availableTags = [
-            {% for category in categories %}
-            {% spaceless %}
-                "{{ category.name }}"{% if not loop.last %},{% endif %}
-            {% endspaceless %}
-            {% endfor %}
-        ];
-        $( ".tags" ).autocomplete({
+
+        $( "input.tags" ).autocomplete({
             source: availableTags
         });
     </script>
