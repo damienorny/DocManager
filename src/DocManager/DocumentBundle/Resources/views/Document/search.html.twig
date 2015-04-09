@@ -9,7 +9,7 @@
     <div class="document-list col-md-9">
         {% for document in documents %}
             <div class="col-md-4 col-sm-6 elementDocument" data-set="{% for categorie in document.categories %}{{ categorie.name }}{% if not loop.last %},{% endif %}{% endfor %}">
-                <a href="{{ path('doc_manager_document_view', {'id':document.id}) }}" class="thumbnail document-thumbnail">
+                <a href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}" class="thumbnail document-thumbnail">
                     <img class="img-rounded img-responsive" src="{{ asset(document.webPath) }}">
                     <div class="caption">
                         <p class="document-name">{{ document.name }}</p>

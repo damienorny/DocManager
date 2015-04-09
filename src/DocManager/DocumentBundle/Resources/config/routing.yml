@@ -2,16 +2,16 @@ doc_manager_document_index:
     path:     /index
     defaults: { _controller: DocManagerDocumentBundle:Document:index }
 doc_manager_document_edit:
-    path:     /edit/{id}
+    path:     /edit/{slug}
     defaults: { _controller: DocManagerDocumentBundle:Document:edit}
 doc_manager_document_add:
     path:     /add
     defaults: { _controller: DocManagerDocumentBundle:Document:add}
 doc_manager_document_view:
-    path:     /document/{id}
+    path:     /document/{slug}
     defaults: { _controller: DocManagerDocumentBundle:Document:view}
 doc_manager_document_delete:
-    path:     /delete/{id}
+    path:     /delete/{slug}
     defaults: { _controller: DocManagerDocumentBundle:Document:delete }
 doc_manager_document_out_of_date:
     path:     /out-of-date

@@ -12,5 +12,5 @@
             <i class="fa fa-trash-o"></i> Supprimer
         </button>
     {{ form_end(form) }}
-    <a class="btn btn-default" href="{{ path('doc_manager_document_view', {'id': document.id}) }}">Retour au document</a>
+    <a class="btn btn-default" href="{{ path('doc_manager_document_view', {'slug': document.slug}) }}">Retour au document</a>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace DocManager\DocumentBundle\Controller;
 
 use DocManager\DocumentBundle\Entity\Document;
+use DocManager\DocumentBundle\Form\DocumentEditType;
 use DocManager\DocumentBundle\Form\EditCategoriesType;
 use DocManager\DocumentBundle\Form\DocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -44,8 +45,13 @@ class DocumentController extends Controller
                     $document->addCategory($dbCategory);
                 }
             }
-
             $em->persist($document);
+            $em->flush();
+            $unusedCategories = $em->getRepository('DocManagerDocumentBundle:Category')->getUnusedCategories();
+            foreach($unusedCategories as $unusedCategory)
+            {
+                $em->remove($unusedCategory);
+            }
             $em->flush();
         }
         $categories = $em->getRepository('DocManagerDocumentBundle:Category')->findByUser($this->getUser()->getId());
@@ -57,9 +63,20 @@ class DocumentController extends Controller
     }
 
 
-    public function editAction($id)
+    public function editAction(Document $document, Request $request)
     {
-        return $this->render('DocManagerDocumentBundle:Document:edit.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new DocumentEditType(), $document);
+        $form->handleRequest($request);
+        if($form->isValid())
+        {
+            $em->persist($document);
+            $em->flush();
+            return $this->redirect($this->generateUrl('doc_manager_document_view', array('slug' => $document->getSlug())));
+        }
+        return $this->render('DocManagerDocumentBundle:Document:edit.html.twig',array(
+            'form' => $form->createView(),
+            'document' => $document));
     }
 
     public function addAction(Request $request)
@@ -113,10 +130,14 @@ class DocumentController extends Controller
         {
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($document);
+            $unusedCategories = $em->getRepository('DocManagerDocumentBundle:Category')->getUnusedCategories();
+            foreach($unusedCategories as $unusedCategory)
+            {
+                $em->remove($unusedCategory);
+            }
             $em->flush();
             return $this->redirect($this->generateUrl('doc_manager_document_index'));
         }
-
         return $this->render('DocManagerDocumentBundle:Document:delete.html.twig', array(
             'form' => $form->createView(),
             'document' => $document

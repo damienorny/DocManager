@@ -5,6 +5,8 @@ namespace DocManager\DocumentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Document
@@ -55,6 +57,7 @@ class Document
     /**
      * @var string
      * @ORM\Column(name="document_image", type="string", length=255)
+     * @Assert\Image()
      */
     private $image;
 
@@ -77,6 +80,12 @@ class Document
      * @ORM\ManyToMany(targetEntity="DocManager\DocumentBundle\Entity\Category", cascade={"persist"})
      */
     private $categories;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     */
+    private $slug;
 
     function __construct()
     {
@@ -253,9 +262,6 @@ class Document
         if (null === $this->file) {
             return;
         }
-
-        // Le nom du fichier est son id, on doit juste stocker également son extension
-        // Pour faire propre, on devrait renommer cet attribut en « extension », plutôt que « url »
         $this->setImage($this->file->getClientOriginalName());
     }
 
@@ -270,8 +276,8 @@ class Document
         }
         // On déplace le fichier envoyé dans le répertoire de notre choix
         $this->file->move(
-            $this->getUploadRootDir(), // Le répertoire de destination
-            $this->image   // Le nom du fichier à créer, ici « id.extension »
+            $this->getUploadRootDir(),
+            $this->image
         );
     }
 
@@ -358,5 +364,28 @@ class Document
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Document
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

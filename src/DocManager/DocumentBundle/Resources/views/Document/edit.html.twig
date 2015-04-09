@@ -5,5 +5,33 @@
 {% endblock %}
 
 {% block body %}
-    Edition de document
+    <div class="col-md-8 well">
+        {{ form_start(form, {'attr':{'class' : 'form-horizontal'}}) }}
+        <div class="form-group">
+            {{ form_label(form.name,"Nom du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-8">
+                {{ form_widget(form.name, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.description,"Description du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-8">
+                {{ form_widget(form.description) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.documentDate,"Date du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+            <div class="col-sm-8">
+                {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="col-sm-offset-3">
+            {{ form_widget(form.save, {'attr' : {'class' : 'btn btn-primary'}, 'label' : 'Sauvegarder'}) }}
+            <a class="btn btn-default" href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}">Annuler</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <div class="col-md-3 col-md-offset-1 well">
+        <img style="max-width: 100%" src="{{ asset(document.webPath) }}">
+    </div>
 {% endblock %}

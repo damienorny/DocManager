@@ -15,7 +15,7 @@ class DocumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', 'text')
-            ->add('description', 'textarea')
+            ->add('description', 'ckeditor')
             ->add('documentDate', 'date',array(
                 'input' => 'datetime',
                 'widget' => 'single_text'

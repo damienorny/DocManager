@@ -10,24 +10,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class GreetCommand extends ContainerAwareCommand
+class OutOfDateCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('demo:greet')
-            ->setDescription('Saluez quelqu\'un')
-            ->addArgument(
-                'name',
-                InputArgument::OPTIONAL,
-                'Qui voulez-vous saluez?'
-            )
-            ->addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'Si défini, la réponse est affichée en majuscules'
-            )
+            ->setName('document:notifyOutOfDate')
+            ->setDescription('Send an email to all users with out of date documents')
         ;
     }
 

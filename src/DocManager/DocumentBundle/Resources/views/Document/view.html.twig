@@ -6,12 +6,11 @@
 
 {% block body %}
     <div class="col-md-8 well">
-        <p>{{ document.name }}</p>
-        <p>{{ document.description }}</p>
-        <p><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
-        <p>
-        </p>
-        <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'id' : document.id}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
+        <h1>{{ document.name }}</h1>
+        <p style="text-align: center"><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
+        <p>{{ document.description|raw }}</p>
+        <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'slug' : document.slug}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
+        <a class="btn btn-primary" href="{{ path('doc_manager_document_edit', {'slug' : document.slug}) }}"><i class="fa fa-pencil-square-o"></i> Modifier</a>
     </div>
     <div class="col-md-3 col-md-offset-1 well">
         <h2>Catégories <small><button class="btn btn-default btn-plus"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></small></h2>

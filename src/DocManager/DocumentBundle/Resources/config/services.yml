@@ -2,3 +2,7 @@ services:
 #    doc_manager_document.example:
 #        class: DocManager\DocumentBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+    doc_manager_document.ckeditor:
+        class: DocManager\DocumentBundle\Form\Type\CkeditorType
+        tags:
+            - { name: form.type, alias: ckeditor }

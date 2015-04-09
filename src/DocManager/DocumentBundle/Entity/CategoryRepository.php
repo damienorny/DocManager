@@ -2,7 +2,7 @@
 
 namespace DocManager\DocumentBundle\Entity;
 
-use DocManager\UserBundle\Entity\User;
+use DocManager\DocumentBundle\Entity\Category;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,27 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
-    public function getAllUserCategories(User $user)
+    public function getUnusedCategories()
     {
-        $qb = $this->createQueryBuilder('d');
-
-        // On fait une jointure avec l'entité Category avec pour alias « c »
-        $qb
-            ->join('d.categories', 'c')
-            ->addSelect('c')
-            ->join('d.user', 'u')
-            ->addSelect('u')
-        ;
-
-        // Puis on filtre sur le nom des catégories à l'aide d'un IN
-        $qb->where($qb->expr()->in('c.name', $categoryNames));
-        $qb->where($qb->expr()->in('u.name', $categoryNames));
-        // La syntaxe du IN et d'autres expressions se trouve dans la documentation Doctrine
-
-        // Enfin, on retourne le résultat
-        return $qb
-            ->getQuery()
-            ->getResult()
-            ;
+        $categorieUtilisee = array();
+        $em = $this->_em;
+        $documents = $em->getRepository('DocManagerDocumentBundle:Document')->findAll();
+        foreach($documents as $document)
+        {
+            foreach($document->getCategories() as $categorie)
+            {
+                if(!in_array($categorie,$categorieUtilisee))
+                {
+                    array_push($categorieUtilisee, $categorie);
+                }
+            }
+        }
+        $query = $em->createQuery('SELECT c FROM DocManagerDocumentBundle:Category c WHERE c NOT IN (:unused)');
+        $query->setParameter('unused',$categorieUtilisee);
+        return $query->getResult();
     }
 }
