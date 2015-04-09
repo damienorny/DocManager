@@ -5,59 +5,61 @@ Ajout - {{ parent() }}
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form, {'attr':{'class' : 'form-horizontal'}}) }}
-        <div class="form-group">
-            {{ form_label(form.name,"Nom du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-sm-4">
-                {{ form_widget(form.name, {'attr' : {'class' : 'form-control'}}) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.description,"Description du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-sm-4">
-                {{ form_widget(form.description) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.documentDate,"Date du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-sm-4">
-                {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.expirationDate,"Date d'expiration du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-sm-4">
-                {{ form_widget(form.expirationDate, {'attr' : {'class' : 'form-control'}}) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.file,"Image",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
-            <div class="col-sm-4">
-                {{ form_widget(form.file, {'attr' : {'class' : 'form-control'}}) }}
-            </div>
-        </div>
-        {% macro categoryCollectionItem(formData) %}
-                <div class="input-group" style="margin-bottom: 10px">
-                    {{ form_widget(formData.name, {'attr' : {'class' : 'form-control tags'}}) }}
-                    <span class="input-group-btn">
-                            <button class="btn btn-danger btn-supprimer" type="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-                    </span>
+    <div class = "well">
+        {{ form_start(form, {'attr':{'class' : 'form-horizontal'}}) }}
+            <div class="form-group">
+                {{ form_label(form.name,"Nom du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.name, {'attr' : {'class' : 'form-control'}}) }}
                 </div>
-        {% endmacro %}
-        <div class="form-group">
-            <div class="col-sm-3 control-label">
-                {{ form_label(form.categories, "Catégories") }}
             </div>
-            <div class="categories col-sm-4" data-prototype="{{ _self.categoryCollectionItem(form.categories.vars.prototype)|e }}">
-                <button class="btn btn-default btn-plus" style="margin-bottom: 10px"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <div class="form-group">
+                {{ form_label(form.description,"Description du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.description) }}
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                {{ form_label(form.documentDate,"Date du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.expirationDate,"Date d'expiration du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.expirationDate, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.file,"Image",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-4">
+                    {{ form_widget(form.file, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+            {% macro categoryCollectionItem(formData) %}
+                    <div class="input-group" style="margin-bottom: 10px">
+                        {{ form_widget(formData.name, {'attr' : {'class' : 'form-control tags'}}) }}
+                        <span class="input-group-btn">
+                                <button class="btn btn-danger btn-supprimer" type="button"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+            {% endmacro %}
+            <div class="form-group">
+                <div class="col-sm-3 control-label">
+                    {{ form_label(form.categories, "Catégories") }}
+                </div>
+                <div class="categories col-sm-4" data-prototype="{{ _self.categoryCollectionItem(form.categories.vars.prototype)|e }}">
+                    <button class="btn btn-default btn-plus" style="margin-bottom: 10px"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                </div>
+            </div>
 
-        <div class="col-sm-offset-3">
-            {{ form_row(form.save, {'attr' : {'class' : 'btn btn-default'}, 'label' : 'Sauvegarder'}) }}
-        </div>
-        {% do form.categories.setRendered %}
-    {{ form_end(form) }}
+            <div class="col-sm-offset-3">
+                {{ form_row(form.save, {'attr' : {'class' : 'btn btn-primary'}, 'label' : 'Sauvegarder'}) }}
+            </div>
+            {% do form.categories.setRendered %}
+        {{ form_end(form) }}
+    </div>
     <script type="application/javascript">
         var availableTags = [
             {% for category in categories %}

@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    Vous êtes sur le point de supprimer le document {{ document.name }}
-    {{ form_start(form) }}
-        {{ form_rest(form) }}
-        <button class="btn btn-danger" type="submit">
-            <i class="fa fa-trash-o"></i> Supprimer
-        </button>
-    {{ form_end(form) }}
-    <a class="btn btn-default" href="{{ path('doc_manager_document_view', {'slug': document.slug}) }}">Retour au document</a>
+    <div class="well">
+        Vous êtes sur le point de supprimer le document {{ document.name }}.
+        {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <button class="btn btn-danger" type="submit">
+                <i class="fa fa-trash-o"></i> Supprimer
+            </button>
+            <a class="btn btn-primary" href="{{ path('doc_manager_document_view', {'slug': document.slug}) }}">Annuler</a>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
