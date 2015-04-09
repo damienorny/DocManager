@@ -57,7 +57,6 @@ class Document
     /**
      * @var string
      * @ORM\Column(name="document_image", type="string", length=255)
-     * @Assert\Image()
      */
     private $image;
 
@@ -67,6 +66,14 @@ class Document
      */
     private $expirationDate;
 
+    /**
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     maxSizeMessage = "La taille maximale est de 5MB.",
+     *     mimeTypesMessage = "Seules les images sont actuellement autorisées."
+     * )
+     */
     private $file;
 
     private $tempFilename;
@@ -262,7 +269,7 @@ class Document
         if (null === $this->file) {
             return;
         }
-        $this->setImage($this->file->getClientOriginalName());
+        $this->setImage($this->file->guessExtension());
     }
 
     /**
@@ -277,7 +284,7 @@ class Document
         // On déplace le fichier envoyé dans le répertoire de notre choix
         $this->file->move(
             $this->getUploadRootDir(),
-            $this->image
+            $this->slug.".".$this->image
         );
     }
 
@@ -287,7 +294,7 @@ class Document
     public function preRemoveUpload()
     {
         // On sauvegarde temporairement le nom du fichier, car il dépend de l'id
-        $this->tempFilename = $this->getUploadRootDir().'/'.$this->image;
+        $this->tempFilename = $this->getUploadRootDir().'/'.$this->slug.".".$this->image;
     }
 
     /**
@@ -310,7 +317,7 @@ class Document
 
     public function getWebPath()
     {
-        return $this->getUploadDir().'/'.$this->image;
+        return $this->getUploadDir().'/'.$this->slug.".".$this->image;
     }
 
     protected function getUploadRootDir()
