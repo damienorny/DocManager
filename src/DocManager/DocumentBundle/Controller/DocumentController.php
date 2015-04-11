@@ -7,7 +7,9 @@ use DocManager\DocumentBundle\Form\DocumentEditType;
 use DocManager\DocumentBundle\Form\EditCategoriesType;
 use DocManager\DocumentBundle\Form\DocumentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DocumentController extends Controller
@@ -84,7 +86,7 @@ class DocumentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $document = new Document();
-        $form = $this->createForm(new DocumentType(), $document);
+        $form = $this->createForm(new DocumentType($this->getUser()), $document);
 
         $form->handleRequest($request);
 
@@ -177,5 +179,20 @@ class DocumentController extends Controller
         return $this->render('@DocManagerDocument/Document/search.html.twig',
             array('documents' => $documents,
                 'categories' => $categories));
+    }
+
+    public function downloadAction(Document $document)
+    {
+        $filename = $document->getSlug().".".$document->getImage();
+        $filePath = $document->getUploadRootDir()."/".$filename;
+        $response = new BinaryFileResponse($filePath);
+        $d = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $filename
+        );
+
+        //$response->headers->set('Content-Disposition', $d);
+
+        return $response;
     }
 }

@@ -43,3 +43,8 @@ monolog:
 
 assetic:
     use_controller: true
+
+swiftmailer:
+    transport:  gmail
+    username:   "%gmail_account%"
+    password:   "%gmail_password%"

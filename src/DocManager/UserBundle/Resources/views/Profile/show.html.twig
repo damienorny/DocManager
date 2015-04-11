@@ -3,9 +3,13 @@
 {% block fos_user_content %}
     <div class = "well">
         <h2>Votre profil :</h2>
-
-        Nom d'utilisateur : {{ app.user.username }}<br/>
-        Adresse email : {{ app.user.email }}<br/><br/>
+        <div>
+            <p>Nom d'utilisateur : {{ app.user.username }}</p>
+            <p>Adresse email : {{ app.user.email }}</p>
+            {% if is_granted('ROLE_PREMIUM') %}
+                <p>Vous êtes un utilisateur Premium. Merci de votre confiance</p>
+            {% endif %}
+        </div>
         <a href = "{{ path('fos_user_profile_edit') }}" class="btn btn-primary">Editer</a>
         <a href = "{{ path('fos_user_change_password') }}" class="btn btn-success">Changer de mot de passe</a>
     </div>

@@ -26,3 +26,13 @@
     min-height: 270px;
     overflow: auto;
 }
+
+.date-peremption
+{
+    display: none;
+}
+
+.document-perime
+{
+    cursor: pointer;
+}

@@ -19,3 +19,6 @@ doc_manager_document_out_of_date:
 doc_manager_document_search:
     path:     /search
     defaults: { _controller: DocManagerDocumentBundle:Document:search }
+doc_manager_document_download:
+    path:     /download/{slug}
+    defaults: { _controller: DocManagerDocumentBundle:Document:download}

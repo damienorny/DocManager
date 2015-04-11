@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use DocManager\DocumentBundle\Validator\Constraints as DocManagerAssert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -63,6 +64,7 @@ class Document
     /**
      * @var \DateTime
      * @ORM\Column(name="expiration_date", type="datetime", nullable=true)
+     * @DocManagerAssert\DateConstraint
      */
     private $expirationDate;
 
@@ -320,7 +322,7 @@ class Document
         return $this->getUploadDir().'/'.$this->slug.".".$this->image;
     }
 
-    protected function getUploadRootDir()
+    public function getUploadRootDir()
     {
         // On retourne le chemin relatif vers l'image pour notre code PHP
         return __DIR__.'/../../../../web/'.$this->getUploadDir();
@@ -394,5 +396,17 @@ class Document
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function isOutDated()
+    {
+        return ($this->expirationDate < new \DateTime() && $this->expirationDate != null);
+    }
+
+    public function getDeleteDate()
+    {
+        $date = $this->expirationDate;
+        $date->modify("+30 days");
+        return $date;
     }
 }

@@ -26,6 +26,11 @@ Ajout - {{ parent() }}
                     {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
                 </div>
             </div>
+            {% if form_errors(form.expirationDate) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.expirationDate) }}
+                </div>
+            {% endif %}
             <div class="form-group">
                 {{ form_label(form.expirationDate,"Date d'expiration du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                 <div class="col-sm-4">
@@ -33,7 +38,7 @@ Ajout - {{ parent() }}
                 </div>
             </div>
             {% if form_errors(form.file) %}
-                <div class="col-md-offset-3 alert alert-danger">
+                <div class="alert alert-danger">
                     {{ form_errors(form.file) }}
                 </div>
             {% endif %}
