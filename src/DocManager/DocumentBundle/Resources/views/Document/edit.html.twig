@@ -25,6 +25,14 @@
                 {{ form_widget(form.documentDate, {'attr' : {'class' : 'form-control'}}) }}
             </div>
         </div>
+        {% if form.expirationDate is defined %}
+            <div class="form-group">
+                {{ form_label(form.expirationDate,"Date d'expiration du document",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                <div class="col-sm-8">
+                    {{ form_widget(form.expirationDate, {'attr' : {'class' : 'form-control'}}) }}
+                </div>
+            </div>
+        {% endif %}
         <div class="col-sm-offset-3">
             {{ form_widget(form.save, {'attr' : {'class' : 'btn btn-primary'}, 'label' : 'Sauvegarder'}) }}
             <a class="btn btn-danger" href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}">Annuler</a>
@@ -32,6 +40,6 @@
         {{ form_end(form) }}
     </div>
     <div class="col-md-3 col-md-offset-1 well">
-        <img style="max-width: 100%" src="{{ asset(document.webPath) }}">
+        <img style="max-width: 100%" src="{{ asset(document.webPathThumbnail) }}">
     </div>
 {% endblock %}

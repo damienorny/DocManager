@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DocumentController extends Controller
@@ -28,7 +29,7 @@ class DocumentController extends Controller
         $em = $this->getDoctrine()->getManager();
         if($document->getUser() != $this->getUser())
         {
-            throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
+            throw new NotFoundHttpException();
         }
         $form = $this->createForm(new EditCategoriesType(), $document);
         $form->handleRequest($request);
@@ -69,7 +70,7 @@ class DocumentController extends Controller
     public function editAction(Document $document, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new DocumentEditType(), $document);
+        $form = $this->createForm(new DocumentEditType($this->getUser()), $document);
         $form->handleRequest($request);
         if($form->isValid())
         {
@@ -134,6 +135,7 @@ class DocumentController extends Controller
         {
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($document);
+            $em->flush();
             $unusedCategories = $em->getRepository('DocManagerDocumentBundle:Category')->getUnusedCategories();
             foreach($unusedCategories as $unusedCategory)
             {

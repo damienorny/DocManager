@@ -1,5 +1,5 @@
 doc_manager_document_index:
-    path:     /index
+    path:     /
     defaults: { _controller: DocManagerDocumentBundle:Document:index }
 doc_manager_document_edit:
     path:     /edit/{slug}

@@ -8,18 +8,20 @@
 {% endblock %}
 {% block body %}
     <div class="col-md-8 well document">
-        <h1>{{ document.name }}
+        <h1>{{ document.name }}</h1>
             {% if document.outDated %}
-                <small class="alert alert-danger document-perime"><i class="fa fa-exclamation-triangle"></i> Document périmé depuis le {{ document.expirationDate|date("d/m/Y") }}</small>
+                <div class="alert alert-danger document-perime" style="text-align: center">
+                    <i class="fa fa-exclamation-triangle"></i> Document périmé depuis le {{ document.expirationDate|date("d/m/Y") }}
+                </div>
             {% else %}
                 {% if document.expirationDate is null %}
-                    <small class="date-peremption">Ce document n'a pas de date de péremption</small>
+                    <h1><small class="dated-peremption">Ce document n'a pas de date de péremption</small></h1>
                 {% else %}
-                    <small class="date-peremption">Ce document expirera le {{ document.expirationDate|date("d/m/Y") }}</small>
+                    <h1><small class="dated-peremption">Ce document expirera le {{ document.expirationDate|date("d/m/Y") }}</small></h1>
                 {% endif %}
-            {% endif %}</h1>
+            {% endif %}
         {% if document.outDated %}
-            <div style="display: none;margin-top: 30px;" class="alert alert-danger explication-peremption">
+            <div style="display: none;" class="alert alert-danger explication-peremption">
                 Ce document est expiré. Afin de ne pas surcharger votre gestionnaire de documents en ligne, il sera supprimé automatiquement le {{ document.deleteDate|date('d/m/Y') }}.<br/>
                 {% if is_granted('ROLE_PREMIUM') %}
                     Vous pouvez modifier ou supprimer la date de péremption en modifiant le document
@@ -28,7 +30,12 @@
                 {% endif %}
             </div>
         {% endif %}
-        <p style="text-align: center"><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
+        {% if document.pdf %}
+            <iframe width="100%" height="600px" src="{{ asset('js/pdf/web/viewer.html') }}?file={{ asset(document.webPath) }}"></iframe>
+        {% else %}
+            <p style="text-align: center"><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
+        {% endif %}
+        <h4>Document émis le : {{ document.documentDate|date("d/m/Y") }}</h4>
         <p>{{ document.description|raw }}</p>
         <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'slug' : document.slug}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
         <a class="btn btn-primary" href="{{ path('doc_manager_document_edit', {'slug' : document.slug}) }}"><i class="fa fa-pencil-square-o"></i> Modifier</a>
@@ -100,12 +107,6 @@
 
         $( "input.tags" ).autocomplete({
             source: availableTags
-        });
-
-        $('.document').mouseenter(function(){
-            $('.date-peremption').fadeIn();
-        }).mouseleave(function(){
-            $('.date-peremption').fadeOut();
         });
 
         $('.document-perime').click(function(){

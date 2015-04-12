@@ -1,0 +1,15 @@
+{% extends '::layout.html.twig' %}
+
+{% block title %}
+    Erreur - {{ parent() }}
+{% endblock %}
+
+{% block titreSite %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Erreur {{ status_code }}</h1>
+            <p>La page demandée n'a pas pu être trouvée.</p>
+            <p><a class="btn btn-primary" href="{{ path('doc_manager_document_index') }}">Retour à l'accueil</a></p>
+        </div>
+    </div>
+{% endblock %}

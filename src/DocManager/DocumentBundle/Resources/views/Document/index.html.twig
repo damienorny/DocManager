@@ -13,8 +13,8 @@
     <div class="document-list">
         {% for document in documents %}
             <div class="col-md-3 col-sm-6">
-                <a href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}" class="thumbnail document-thumbnail">
-                    <img class="img-rounded img-responsive" src="{{ asset(document.webPath) }}">
+                <a href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}" class="thumbnail document-thumbnail" {% if document.outDated %}style="background-color: #f2dede" {% endif %}>
+                    <img class="img-rounded img-responsive image-zoom" src="{{ asset(document.webPathThumbnail) }}" data-zoom-image="{{ asset(document.webPathThumbnail) }}">
                     <div class="caption">
                         <p class="document-name">{% if document.outDated %}<i class="fa fa-exclamation-triangle text-danger"></i> {% endif %}{{ document.name }}</p>
                     </div>
@@ -27,5 +27,4 @@
 
         {% endfor %}
     </div>
-
 {% endblock %}

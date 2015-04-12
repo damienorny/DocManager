@@ -4,6 +4,7 @@ namespace DocManager\DocumentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Imagick;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use DocManager\DocumentBundle\Validator\Constraints as DocManagerAssert;
@@ -71,7 +72,7 @@ class Document
     /**
      * @Assert\File(
      *     maxSize = "5M",
-     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff", "application/pdf"},
      *     maxSizeMessage = "La taille maximale est de 5MB.",
      *     mimeTypesMessage = "Seules les images sont actuellement autorisées."
      * )
@@ -283,7 +284,15 @@ class Document
         if (null === $this->file) {
             return;
         }
-        // On déplace le fichier envoyé dans le répertoire de notre choix
+
+        if($this->image == "pdf")
+        {
+            $im = new imagick($this->file.'[0]');
+            $im->setImageFormat('jpg');
+            $im->thumbnailImage(1600, 0);
+            $im->writeImage($this->getUploadRootDir()."/".$this->slug.".jpg");
+        }
+
         $this->file->move(
             $this->getUploadRootDir(),
             $this->slug.".".$this->image
@@ -319,7 +328,19 @@ class Document
 
     public function getWebPath()
     {
-        return $this->getUploadDir().'/'.$this->slug.".".$this->image;
+            return $this->getUploadDir().'/'.$this->slug.".".$this->image;
+    }
+
+    public function getWebPathThumbnail()
+    {
+        if($this->isPdf())
+        {
+            return $this->getUploadDir().'/'.$this->slug.".jpg";
+        }
+        else
+        {
+            return $this->getUploadDir().'/'.$this->slug.".".$this->image;
+        }
     }
 
     public function getUploadRootDir()
@@ -408,5 +429,10 @@ class Document
         $date = $this->expirationDate;
         $date->modify("+30 days");
         return $date;
+    }
+
+    public function isPdf()
+    {
+        return ($this->image == "pdf");
     }
 }

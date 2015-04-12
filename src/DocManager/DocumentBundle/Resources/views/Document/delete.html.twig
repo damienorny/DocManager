@@ -7,6 +7,7 @@
 {% block body %}
     <div class="well">
         Vous êtes sur le point de supprimer le document {{ document.name }}.
+        <p style="text-align: center"><img style="max-width: 100%" src="{{ asset(document.webPathThumbnail) }}"></p>
         {{ form_start(form) }}
             {{ form_rest(form) }}
             <button class="btn btn-danger" type="submit">
