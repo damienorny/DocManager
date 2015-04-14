@@ -6,6 +6,7 @@ Ajout - {{ parent() }}
 
 {% block body %}
     <div class="well">
+        <h2>Ajout de document</h2>
         {{ form_start(form, {'attr':{'class' : 'form-horizontal'}}) }}
             {{ form_errors(form) }}
             <div class="form-group">
@@ -43,7 +44,7 @@ Ajout - {{ parent() }}
                 </div>
             {% endif %}
             <div class="form-group">
-                {{ form_label(form.file,"Image",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                {{ form_label(form.file,"Fichier PDF ou image",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
                 <div class="col-sm-4">
                     {{ form_widget(form.file, {'attr' : {'class' : 'form-control'}}) }}
                 </div>
@@ -91,6 +92,7 @@ Ajout - {{ parent() }}
 
             $('.btn-plus').click(function(e) {
                 addCategory($container);
+                $('.tags').last().focus();
                 return false;
             });
 

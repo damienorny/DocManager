@@ -70,6 +70,10 @@ class DocumentController extends Controller
     public function editAction(Document $document, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        if($document->getUser() != $this->getUser())
+        {
+            throw new NotFoundHttpException();
+        }
         $form = $this->createForm(new DocumentEditType($this->getUser()), $document);
         $form->handleRequest($request);
         if($form->isValid())
@@ -125,7 +129,7 @@ class DocumentController extends Controller
     {
         if($document->getUser() != $this->getUser())
         {
-            throw new AccessDeniedException("Aucun document trouvé avec ce numéro");
+            throw new NotFoundHttpException();
         }
         $formBuilder = $this->createFormBuilder();
         $form = $formBuilder->getForm();
@@ -154,7 +158,7 @@ class DocumentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $documents = $em->getRepository('DocManagerDocumentBundle:Document')->getOutOfDateDocuments($this->getUser());
-        return $this->render('@DocManagerDocument/Document/index.html.twig',
+        return $this->render('@DocManagerDocument/Document/outOfDate.html.twig',
             array('documents' => $documents));
     }
 
@@ -185,6 +189,10 @@ class DocumentController extends Controller
 
     public function downloadAction(Document $document)
     {
+        if($document->getUser() != $this->getUser())
+        {
+            throw new NotFoundHttpException();
+        }
         $filename = $document->getSlug().".".$document->getImage();
         $filePath = $document->getUploadRootDir()."/".$filename;
         $response = new BinaryFileResponse($filePath);
@@ -193,7 +201,7 @@ class DocumentController extends Controller
             $filename
         );
 
-        //$response->headers->set('Content-Disposition', $d);
+        $response->headers->set('Content-Disposition', $d);
 
         return $response;
     }

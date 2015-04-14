@@ -17,14 +17,15 @@
                 </a>
             </div>
         {% else %}
-            <div class="col-sm-offset-6">
-                <i class="fa fa-thumbs-o-up fa-5x"></i>
+            <div class="row" style="text-align: center;color: #d3d3d3">
+                <i class="fa fa-cloud-upload fa-5x"></i><br/>
+                Vous n'avez envoyé aucun document. Cliquez sur le bouton juste au dessus pour commencer.
             </div>
 
         {% endfor %}
     </div>
     <div class="well col-md-3">
-        <h2>Catégories recherchées</h2>
+        <h2><i class="fa fa-filter"></i> Filtrage des catégories</h2>
         <div class="input-group">
             <input type="text" placeholder="Catégorie" id="rechercheCategorie" class="form-control">
             <span class="input-group-btn">

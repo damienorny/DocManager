@@ -7,10 +7,10 @@
 {% block body %}
 
 
-    <a class="btn btn-primary btn-block btn-lg" href="{{ path('doc_manager_document_add') }}">
-        <i class="fa fa-upload"></i> Ajouter un document
-    </a>
-    <div class="document-list row">
+    <div class="alert alert-danger">
+        Les documents figurant ici sont périmés. Ils seront supprimés automatiquement 30 jours après leur date de péremption. Pensez à les sauvagerder si besoin.
+    </div>
+    <div class="document-list">
         {% for document in documents %}
             <div class="col-md-3 col-sm-6">
                 <a href="{{ path('doc_manager_document_view', {'slug':document.slug}) }}" class="thumbnail document-thumbnail" {% if document.outDated %}style="background-color: #f2dede" {% endif %}>
@@ -21,9 +21,8 @@
                 </a>
             </div>
         {% else %}
-            <div class="row" style="text-align: center;color: #d3d3d3">
-                <i class="fa fa-cloud-upload fa-5x"></i><br/>
-                Vous n'avez envoyé aucun document. Cliquez sur le bouton juste au dessus pour commencer.
+            <div class="col-sm-offset-6">
+                <i class="fa fa-thumbs-o-up fa-5x"></i>
             </div>
 
         {% endfor %}

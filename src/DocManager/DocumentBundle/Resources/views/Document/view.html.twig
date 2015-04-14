@@ -35,8 +35,18 @@
         {% else %}
             <p style="text-align: center"><img style="max-width: 100%" src="{{ asset(document.webPath) }}"></p>
         {% endif %}
-        <h4>Document émis le : {{ document.documentDate|date("d/m/Y") }}</h4>
-        <p>{{ document.description|raw }}</p>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Description</h3>
+            </div>
+            <div class="panel-body">
+                {{ document.description|raw }}
+            </div>
+            <div class="panel-footer">
+                <h3 class="panel-title">Document émis le : {{ document.documentDate|date("d/m/Y") }}</h3>
+            </div>
+        </div>
         <a class="btn btn-danger" href="{{ path('doc_manager_document_delete', {'slug' : document.slug}) }}"><i class="fa fa-trash-o"></i> Supprimer</a>
         <a class="btn btn-primary" href="{{ path('doc_manager_document_edit', {'slug' : document.slug}) }}"><i class="fa fa-pencil-square-o"></i> Modifier</a>
         <a class="btn btn-default" href="{{ path('doc_manager_document_download', {'slug' : document.slug}) }}"><i class="fa fa-download"></i> Télécharger</a>
@@ -82,6 +92,7 @@
 
             $('.btn-plus').click(function(e) {
                 addCategory($container);
+                $('.tags').last().focus();
                 return false;
             });
 

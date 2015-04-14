@@ -2,15 +2,17 @@
 
 {% block fos_user_content %}
     <div class = "well">
-        <h2>Votre profil :</h2>
+        <h2>Votre profil</h2>
         <div>
             <p>Nom d'utilisateur : {{ app.user.username }}</p>
             <p>Adresse email : {{ app.user.email }}</p>
+            <p>Vous disposez de {{ app.user.documents|length }} documents.</p>
             {% if is_granted('ROLE_PREMIUM') %}
                 <p>Vous êtes un utilisateur Premium. Merci de votre confiance</p>
             {% endif %}
         </div>
         <a href = "{{ path('fos_user_profile_edit') }}" class="btn btn-primary">Editer</a>
         <a href = "{{ path('fos_user_change_password') }}" class="btn btn-success">Changer de mot de passe</a>
+        <a href = "{{ path('doc_manager_user_grant') }}" class="btn btn-warning">Changement premium/standard</a>
     </div>
 {% endblock fos_user_content %}

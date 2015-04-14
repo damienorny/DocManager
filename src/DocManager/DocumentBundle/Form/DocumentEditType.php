@@ -25,6 +25,7 @@ class DocumentEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->remove('name')
             ->remove('file')
             ->remove('categories');
 

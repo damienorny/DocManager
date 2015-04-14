@@ -80,6 +80,7 @@ class Document
     private $file;
 
     private $tempFilename;
+    private $tempFileThumbnailName;
 
     /**
      * @ORM\ManyToOne(targetEntity="DocManager\UserBundle\Entity\User")
@@ -304,8 +305,8 @@ class Document
      */
     public function preRemoveUpload()
     {
-        // On sauvegarde temporairement le nom du fichier, car il dépend de l'id
         $this->tempFilename = $this->getUploadRootDir().'/'.$this->slug.".".$this->image;
+        $this->tempFileThumbnailName = $this->getUploadRootDir().'/'.$this->slug.".jpg";
     }
 
     /**
@@ -313,10 +314,12 @@ class Document
      */
     public function removeUpload()
     {
-        // En PostRemove, on n'a pas accès à l'id, on utilise notre nom sauvegardé
         if (file_exists($this->tempFilename)) {
-            // On supprime le fichier
             unlink($this->tempFilename);
+        }
+        if(file_exists($this->tempFileThumbnailName))
+        {
+            unlink($this->tempFileThumbnailName);
         }
     }
 
@@ -335,7 +338,14 @@ class Document
     {
         if($this->isPdf())
         {
-            return $this->getUploadDir().'/'.$this->slug.".jpg";
+            if(file_exists($this->getUploadDir().'/'.$this->slug.".jpg"))
+            {
+                return $this->getUploadDir().'/'.$this->slug.".jpg";
+            }
+            else
+            {
+                return 'img/pdf.png';
+            }
         }
         else
         {

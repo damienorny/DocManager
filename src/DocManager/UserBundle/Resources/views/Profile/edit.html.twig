@@ -2,6 +2,7 @@
 
 {% block fos_user_content %}
     <div class="well">
+        <h2>Modification du profil</h2>
         <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit form-horizontal">
             <div class="form-group">
                 {{ form_label(form.username,"Nom d'utilisateur",{'label_attr': {'class': 'col-sm-3 control-label'}}) }}
